@@ -1,17 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiURL, fetchHeaders, fetchHeadersMultipart } from "../../constants";
 
-export const fetchUserList = createAsyncThunk("fetchUserList",async ()=>{
+export const fetchUserList = createAsyncThunk("fetchUserList",async ({getState})=>{
+    const headers = fetchHeaders(getState);
     const response = await fetch(`${apiURL}/user`,{
-        headers:fetchHeaders,
+        headers,
         method:"GET",
       }).then(res=>res.json());
       return response;
 });
 
-export const editUser = createAsyncThunk("editUser",async (formdata,isMultipart=false)=>{
+export const editUser = createAsyncThunk("editUser",async ({formdata,isMultipart=false},{getState})=>{
+    const headers = isMultipart?fetchHeadersMultipart(getState):fetchHeaders(getState);
     const response = await fetch(`${apiURL}/user`,{
-        headers:isMultipart?fetchHeadersMultipart:fetchHeaders,
+        headers,
         method:"PUT",
         body:formdata
       }).then(res=>res.json());
@@ -20,9 +22,10 @@ export const editUser = createAsyncThunk("editUser",async (formdata,isMultipart=
 
 
 
-export const changeUserType = createAsyncThunk("changeUserType",async (body)=>{
+export const changeUserType = createAsyncThunk("changeUserType",async (body,{getState})=>{
+    const headers = fetchHeaders(getState);
     const response = await fetch(`${apiURL}/user/type`,{
-        headers:fetchHeaders,
+        headers,
         method:"POST",
         body:JSON.stringify(body)
       }).then(res=>res.json());
@@ -31,9 +34,10 @@ export const changeUserType = createAsyncThunk("changeUserType",async (body)=>{
 
 
 
-export const deleteUser = createAsyncThunk("deleteUser",async (body)=>{
+export const deleteUser = createAsyncThunk("deleteUser",async (body,{getState})=>{
+    const headers = fetchHeaders(getState);
     const response = await fetch(`${apiURL}/user`,{
-        headers:fetchHeaders,
+        headers,
         method:"DELETE",
         body:JSON.stringify(body)
       }).then(res=>res.json());

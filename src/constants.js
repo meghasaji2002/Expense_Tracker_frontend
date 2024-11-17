@@ -1,8 +1,14 @@
 export const apiURL= 'https://expense-tracker-node-backend.onrender.com';
-export const fetchHeaders = {
+export const fetchHeaders =(getState)=> {
+  const state = getState();
+  return {
     "Content-Type":"application/json",
-    "Authorization":"Bearer " + sessionStorage.getItem('EXPENSE-TRACKER-TOKEN')
+    "Authorization":"Bearer " + state?.auth?.token
   };
-  export const fetchHeadersMultipart = {
-      "Authorization":"Bearer " + sessionStorage.getItem('EXPENSE-TRACKER-TOKEN')
+}
+  export const fetchHeadersMultipart =(getState)=> {
+    const state = getState();
+    return {
+      "Authorization":"Bearer " + state?.auth?.token
     };
+  }

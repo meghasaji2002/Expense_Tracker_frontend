@@ -1,18 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiURL, fetchHeaders } from "../../constants";
 
-export const fetchExpenses = createAsyncThunk("fetchExpenses",async (body)=>{
+export const fetchExpenses = createAsyncThunk("fetchExpenses",async (body,{getState})=>{
+  const headers = fetchHeaders(getState);
     const response = await fetch(`${apiURL}/expense`,{
-        headers:fetchHeaders,
+        headers,
         method:"GET",
         body:JSON.stringify(body)
       }).then((res)=>res.json());
       return response;
 });
 
-export const createExpense = createAsyncThunk("createExpense",async (body)=>{
+export const createExpense = createAsyncThunk("createExpense",async (body,{getState})=>{
+  const headers = fetchHeaders(getState);
     const response = await fetch(`${apiURL}/expense`,{
-        headers:fetchHeaders,
+        headers,
         method:"POST",
         body:JSON.stringify(body)
 
@@ -20,9 +22,10 @@ export const createExpense = createAsyncThunk("createExpense",async (body)=>{
       return response;
 });
 
-export const updateExpense = createAsyncThunk("updateExpense",async (body)=>{
+export const updateExpense = createAsyncThunk("updateExpense",async (body,{getState})=>{
+  const headers = fetchHeaders(getState);
   const response = await fetch(`${apiURL}/expense`,{
-      headers:fetchHeaders,
+      headers,
       method:"PUT",
       body:JSON.stringify(body)
 
@@ -30,9 +33,10 @@ export const updateExpense = createAsyncThunk("updateExpense",async (body)=>{
     return response;
 });
 
-export const deleteExpense = createAsyncThunk("deleteExpense",async(body)=>{
+export const deleteExpense = createAsyncThunk("deleteExpense",async(body,{getState})=>{
+  const headers = fetchHeaders(getState);
   const response = await fetch(`${apiURL}/expense`,{
-      headers:fetchHeaders,
+      headers,
       method:"DELETE",
       body:JSON.stringify(body)
 

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiURL, fetchHeaders } from "../../constants";
 
-export const fetchExpensesGraphData = createAsyncThunk("fetchExpensesGraphData",async (year)=>{
+export const fetchExpensesGraphData = createAsyncThunk("fetchExpensesGraphData",async (year,{getState})=>{
+    const headers = fetchHeaders(getState);
     const response = await fetch(`${apiURL}/dashboard/expense-graph-data?year=${year}`,{
-        headers:fetchHeaders,
+        headers,
         method:"GET",
       }).then(res=>res.json());
       return response;

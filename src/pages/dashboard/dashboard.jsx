@@ -52,7 +52,6 @@ function Dashboard() {
 	const { expenseGraphData } = useSelector(state => state.dashboard);
 	const { userlist } = useSelector(state => state.user);
 	const { userDetails } = useSelector(state => state.auth);
- console.log("userDetails ", userDetails);
 
 	const logOut = () => {
 		dispatch(logout())
@@ -113,11 +112,11 @@ function Dashboard() {
 	}
 
 	const handleEditProfile = () => {
-		let reqBody = null;
-		reqBody = new FormData();
+		let reqBody = new FormData();
 		reqBody.append("fullname", inputFullname);
-		reqBody.append("profile", profileInput[0]);
-		dispatch(editUser(reqBody, true)).then((data) => {
+		reqBody.append("profile", profileInput);
+		dispatch(editUser({formdata:reqBody, isMultipart:true})).then((data) => {
+ console.log("data ", data);
 			if (data.payload.status === 200) {
 				dispatch(updateUserState({ ...data?.payload?.data }));
 				toast.success('profile image changed')
@@ -184,7 +183,7 @@ function Dashboard() {
 								<div>
 									<div className="img-upload-btn">
 										<div className='img-preview-wrapper'>
-											<img className='avatar' width={45} height={45} src={userDetails?.profile ? (apiURL + "/uploads/" + userDetails?.profile) : "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg"} alt="profile-img" />
+											<img className='avatar' width={45} height={45} src={profileImageUrl?profileImageUrl : userDetails?.profile ? (apiURL + "/uploads/" + userDetails?.profile) : "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg"} alt="profile-img" />
 										</div>
 										<label>
 											<input id='profile' onChange={handleProfileInput} type="file" style={{ display: 'none' }} />
